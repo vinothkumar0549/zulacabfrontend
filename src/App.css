@@ -1,38 +1,109 @@
-.App {
+/* Centered container for login/register */
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 350px;
   text-align: center;
+  margin: auto; /* Centers the component */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Full-screen display when logged in */
+.dashboard-container {
+  max-width: 1200px; /* Set a max-width for large content */
+  margin: auto; /* Keep the same left & right margin */
+  padding: 2rem;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* General Button Styling */
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+  margin-bottom: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background: linear-gradient(135deg, #0056b3, #003c80);
+  transform: scale(1.02);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Toggle Button */
+.toggle-text {
+  margin-top: 1rem;
+  font-size: 14px;
+}
+
+.toggle-text button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.toggle-text button:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Form Labels */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Input Fields */
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 5px;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+
+/* Responsive handling for smaller screens */
+@media (max-width: 768px) {
+  .dashboard-container {
+    max-width: 95%; /* Adjust width for small screens */
+    padding: 1rem;
   }
 }

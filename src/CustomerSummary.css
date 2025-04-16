@@ -1,0 +1,109 @@
+
+  
+  /* .transaction-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+  } */
+  
+  /* .transaction-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  } */
+  
+  /* .transaction-item {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  } */
+  
+  /* .transaction-header {
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+  } */
+
+  .transaction-list-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .transaction-list {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .transaction-item {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Ensure 6 equal columns */
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .transaction-header {
+    font-weight: bold;
+    background-color: #f4f4f4;
+  }
+/**/  
+  
+  .transaction-details {
+    display: flex;
+  }
+  
+  /* .transaction-details > div {
+    flex: 1;
+    text-align: center;
+  } */
+
+  .transaction-details div {
+
+    text-align: center;
+    padding: 5px;
+    word-wrap: break-word;
+  }
+  
+ 
+  .transaction-item div {
+    min-width: 150px; /* Adjust as needed */
+  }
+  
+  
+  
+  .buttons-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .transaction-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .transaction-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .transaction-item {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .transaction-header {
+    display: flex; /* Display headers in a row */
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .transaction-header > div {
+    flex: 1; /* Equal width for each header */
+    text-align: center;
+  }
