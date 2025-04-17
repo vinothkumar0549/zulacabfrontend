@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useAddlocationMutation } from "./apislice"; // update path accordingly
+import { useRemovelocationMutation } from "./apislice"; // update path accordingly
 
 const AddLocation = ({user}) => {
   const [formData, setFormData] = useState({ location: "", distance: "" });
-  const [addlocation, { data, isLoading, error }] = useAddlocationMutation();
+  const [removelocation, { data, isLoading, error }] = useRemovelocationMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,13 +14,13 @@ const AddLocation = ({user}) => {
     e.preventDefault();
 
     try {
-      const response = await addlocation({
+      const response = await removelocation({
         locationname: formData.location,
         distance: Number(formData.distance),
         adminusername: user.username,
         adminpassword: user.encryptedpassword,
       }).unwrap()
-      alert("New Location Added Successfully \n Location Id : " + response.locationid)
+      alert(response.message);
     } catch (err) { 
         alert(err?.data?.error || "Failed to Add Location");
     }
@@ -28,7 +28,7 @@ const AddLocation = ({user}) => {
 
   return (
     <div className="nearby-cab-form">
-      <h2>Add Location Form</h2>
+      <h2>Remove Location Form</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -46,7 +46,7 @@ const AddLocation = ({user}) => {
           onChange={handleChange}
           required
         />
-        <button type="submit">Add Location</button>
+        <button type="submit">Remove Location</button>
       </form>
 
     </div>

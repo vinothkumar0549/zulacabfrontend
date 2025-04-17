@@ -5,6 +5,7 @@ import CabRegister from "./CabRegister";
 import GetAllCabSummary from "./GetAllCabSummary";
 import GetAllCustomerSummary from "./GetAllCustomerSummary"
 import AddLocation from "./AddLocation";
+import RemoveLocation from "./RemoveLocation"
 //import App from "./App";
 
 
@@ -24,6 +25,8 @@ function AdminDashboard({ user,setuser, onLogout }) {
         return <GetAllCustomerSummary user = {user} onClick = {() => setActiveComponent(null)} />
       case "addlocation":
         return <AddLocation user = {user} onClick = {() => setActiveComponent(null)} />
+      case "removelocation":
+        return <RemoveLocation user = {user} onClick = {() => setActiveComponent(null)} />
       default:
         return <Profile user={user} onClose={() => setActiveComponent(null)} />;
 
@@ -43,6 +46,7 @@ function AdminDashboard({ user,setuser, onLogout }) {
           <button className="btn" onClick={() => setActiveComponent("profile")}>Profile</button>
           <button className="btn" onClick={() => setActiveComponent("cabregister")}>Cab Register</button>
           <button className="btn" onClick={() => setActiveComponent("addlocation")}>Add Location</button>
+          <button className="btn" onClick={() => setActiveComponent("removelocation")}>Remove Location</button>
           <button className="btn" onClick={() => setActiveComponent("getallcabsummary")}>All Cab Summary</button>
           <button className="btn" onClick={() => setActiveComponent("getallcustomersummary")}>All Customer Summary</button>
           <button className="btn logout" onClick={onLogout}>Logout</button>

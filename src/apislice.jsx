@@ -79,18 +79,26 @@ export const apiSlice = createApi({
         body: addlocationData,
       })
     }),
+    removelocation: builder.mutation({
+      query: (removelocationData) =>({
+        url: "/removelocation",
+        method: "POST",
+        body: removelocationData
+      })
+    }),
+    availablecabs: builder.mutation({
+      query: (availablecabsData) => ({
+        url: "/checkavailablecab",
+        method: "POST",
+        body: availablecabsData,
+      }),
+       transformResponse: (response) => response.availablecabs|| [] // Ensure array
+    }),
     logout: builder.mutation({
       query:(logoutData) => ({
         url: "/logout",
         method:"POST",
         body: logoutData
-      })
-    }),
-    changepassword: builder.mutation({
-      query: (updatepassword) =>({
-        url: "/changepassword",
-        method: "POST",
-        body: updatepassword
       })
     })
   }),
@@ -106,5 +114,7 @@ export const {
   useGetallcabsummaryMutation,
   useGetallcustomersummaryMutation,
   useAddlocationMutation,
+  useRemovelocationMutation,
+  useAvailablecabsMutation,
   useLogoutMutation
  } = apiSlice;

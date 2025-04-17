@@ -1,14 +1,28 @@
-import React, { useState } from "react";
-import { useBookcabMutation, useRideconfirmMutation } from "./apislice";
+import React, { useState, useEffect } from "react";
+import { useAvailablecabsMutation, useBookcabMutation, useRideconfirmMutation } from "./apislice";
 
 function BookCab({user}) {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [ackData, setAckData] = useState(null);
   const [message, setMessage] = useState("");
-
   const [bookcab, { isLoading: requesting }] = useBookcabMutation();
   const [rideconfirm, { isLoading: confirming }] = useRideconfirmMutation();
+  const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
+
+  useEffect(() => {
+    const fetchCabs = async () => {
+      try {
+        const response = await getAvailableCabs({
+          customerusername: user.username,
+          customerpassword: user.encryptedpassword
+        }).unwrap();
+      } catch (err) {
+        console.error("Failed to fetch cabs:", err);
+      }
+    };
+    fetchCabs();
+  }, [getAvailableCabs]);
 
   const handleRequest = async (e) => {
     e.preventDefault();
@@ -69,6 +83,39 @@ function BookCab({user}) {
           {requesting ? "Requesting..." : "Request Cab"}
         </button>
       </form>
+
+      <div className="available-cabs">
+  <h4>Available Cabs:</h4>
+
+  {data?.length > 0 ? (
+    <table style={{ borderCollapse: "collapse", width: "100%" }}>
+      <thead>
+        <tr>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Location</th>
+          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Cab ID's</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((loc, index) => (
+          <tr key={index}>
+            <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+              {loc.locationname}
+            </td>
+            <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+              {loc.cabid.split(",").map((id, idx) => (
+                <span key={idx} style={{ marginRight: "6px" }}>
+                  {id}
+                </span>
+              ))}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>No cabs available</p>
+  )}
+</div>
 
       {ackData && (
         <div className="confirmation-box">
