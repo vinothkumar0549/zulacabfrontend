@@ -75,35 +75,35 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+  
     const newErrors = {};
-  let hasError = false;
-
-  Object.keys(formData).forEach((key) => {
-    // Only validate fields required for the current form mode
-    if (isLogin && (key === "username" || key === "password")) {
-      newErrors[key] = validateInput(key, formData[key]);
-    } else if (!isLogin && key !== "username") {
-      newErrors[key] = validateInput(key, formData[key]);
+    let hasError = false;
+  
+    // Validate fields based on form mode
+    if (isLogin) {
+      // Validate only username and password
+      ["username", "password"].forEach((field) => {
+        const error = validateInput(field, formData[field]);
+        if (error) {
+          newErrors[field] = error;
+          hasError = true;
+        }
+      });
+    } else {
+      // Validate all fields for registration
+      Object.keys(formData).forEach((field) => {
+        const error = validateInput(field, formData[field]);
+        if (error) {
+          newErrors[field] = error;
+          hasError = true;
+        }
+      });
     }
-
-    if (newErrors[key]) hasError = true;
-  });
-
-  setValidationErrors(newErrors);
-
-  if (hasError) return; // stop if any errors exist
-    // // Perform full validation on submit
-    // const newErrors = {};
-    // Object.keys(formData).forEach((key) => {
-    //   newErrors[key] = validateInput(key, formData[key]);
-    // });
-
-    // setValidationErrors(newErrors);
-    // console.log(formData)
-    // // If any validation error exists, stop submission
-    // if (Object.values(newErrors).some((errorMsg) => errorMsg)) return;
-
+  
+    setValidationErrors(newErrors);
+  
+    if (hasError) return;
+  
     try {
       if (isLogin) {
         const response = await login({
@@ -113,29 +113,32 @@ function App() {
         setUser(response);
       } else {
         const response = await register({
-         user: {
-          name: formData.name,
-          username: formData.username,
-          password: formData.password,
-          age: parseInt(formData.age, 10),
-          role,
-          gender
-        }
-      }).unwrap();
-        console.log(response)
+          user: {
+            name: formData.name,
+            username: formData.username,
+            password: formData.password,
+            age: parseInt(formData.age, 10),
+            role,
+            gender,
+          },
+        }).unwrap();
         alert("Successfully Registered...");
         setIsLogin(true);
-        setFormData({ customerId: "", name: "", password: "", mobilenumber: "", aadhaar: "" });
+        // Clear fields after registration
+        setFormData({ name: "", username: "", password: "", age: "" });
+        setValidationErrors({});
       }
     } catch (error) {
       setError(error.data?.error || "An error occurred");
     }
-  };
+  };  
 
   const handleLogout = async () => {
     try {
       //await logout({ userid: String(user.userid), password: user.password }).unwrap();
       setUser(null);
+      setFormData({ name: "", username: "", password: "", age: "" }); // Reset form data
+      setValidationErrors({}); // Optional: Clear any validation messages
     } catch (error) {
       console.error("Logout failed", error);
     }

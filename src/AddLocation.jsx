@@ -21,6 +21,7 @@ const AddLocation = ({user}) => {
         adminpassword: user.password,
       }).unwrap()
       alert("New Location Added Successfully \n Location Id : " + response.locationid)
+      setFormData({ location: "", distance: "" });
     } catch (err) { 
         alert(err?.data?.error || "Failed to Add Location");
     }
