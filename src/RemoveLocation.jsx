@@ -18,7 +18,7 @@ const AddLocation = ({user}) => {
         locationname: formData.location,
         distance: Number(formData.distance),
         adminusername: user.username,
-        adminpassword: user.encryptedpassword,
+        adminpassword: user.password,
       }).unwrap()
       alert(response.message);
     } catch (err) { 

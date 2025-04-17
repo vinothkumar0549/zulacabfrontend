@@ -8,7 +8,7 @@ const GetAllCabSummary = ({ user, onClose }) => {
   useEffect(() => {
     triggerCabSummary({
       adminusername: user.username,
-      adminpassword: user.encryptedpassword
+      adminpassword: user.password
     });
   }, [user, triggerCabSummary]);
 

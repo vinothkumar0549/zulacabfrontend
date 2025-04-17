@@ -144,11 +144,11 @@ function App() {
   if (user) {
     switch (user.role) {
       case "CUSTOMER":
-        return <CustomerDashboard user={user} setuser = {setUser} onLogout={handleLogout} />
+        return <CustomerDashboard user={user} onLogout = {handleLogout} />
       case "ADMIN":
-        return <AdminDashboard user={user} setuser = {setUser} onLogout={handleLogout} />;
+        return <AdminDashboard user={user} onLogout = {handleLogout} />;
       case "CAB":
-        return <CabDashboard user = {user} setuser = {setUser} onLogout = {handleLogout}/>;
+        return <CabDashboard user = {user} onLogout = {handleLogout} />;
       default:
         return <h2>Unknown role</h2>;
     }

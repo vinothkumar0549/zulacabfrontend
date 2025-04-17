@@ -9,24 +9,24 @@ import RemoveLocation from "./RemoveLocation"
 //import App from "./App";
 
 
-function AdminDashboard({ user,setuser, onLogout }) {
+function AdminDashboard({ user, onLogout }) {
 
     const [activeComponent, setActiveComponent] = useState(null);
 
   const renderComponent = () =>{
     switch (activeComponent) {
       case "profile":
-        return <Profile user={user} onClose={() => setActiveComponent(null)} />;
+        return <Profile user={user}  />;
       case "cabregister":
-        return <CabRegister user = {user} onClose = {() => setActiveComponent(null)} />
+        return <CabRegister user = {user} />
       case "getallcabsummary":
-        return <GetAllCabSummary user = {user} onClick = {() => setActiveComponent(null)} />
+        return <GetAllCabSummary user = {user} onClose = {() => setActiveComponent(null)} />
       case "getallcustomersummary":
-        return <GetAllCustomerSummary user = {user} onClick = {() => setActiveComponent(null)} />
+        return <GetAllCustomerSummary user = {user} onClose = {() => setActiveComponent(null)} />
       case "addlocation":
-        return <AddLocation user = {user} onClick = {() => setActiveComponent(null)} />
+        return <AddLocation user = {user} />
       case "removelocation":
-        return <RemoveLocation user = {user} onClick = {() => setActiveComponent(null)} />
+        return <RemoveLocation user = {user} />
       default:
         return <Profile user={user} onClose={() => setActiveComponent(null)} />;
 

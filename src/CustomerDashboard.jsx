@@ -6,20 +6,20 @@ import CustomerSummary from "./CustomerSummary";
 //import App from "./App";
 
 
-function CustomerDashboard({ user,setuser, onLogout }) {
+function CustomerDashboard({ user, onLogout }) {
 
     const [activeComponent, setActiveComponent] = useState(null);
 
   const renderComponent = () =>{
     switch (activeComponent) {
       case "profile":
-        return <Profile user={user} onClose={() => setActiveComponent(null)} />;
+        return <Profile user={user} />;
       case "bookcab":
-        return <BookCab user = {user} onClose= { () => setActiveComponent(null)} />
+        return <BookCab user = {user} />
       case "customersummary":
-        return <CustomerSummary user= {user} onclose= {() => setActiveComponent(null)} />
+        return <CustomerSummary user= {user} onClose={() => setActiveComponent(null)} />
       default:
-        return <Profile user={user} onClose={() => setActiveComponent(null)} />;
+        return <Profile user={user} />;
 
     }
   };

@@ -5,18 +5,18 @@ import CabSummary from "./CabSummary"
 //import App from "./App";
 
 
-function CabDashboard({ user,setuser, onLogout }) {
+function CabDashboard({ user, onLogout }) {
 
     const [activeComponent, setActiveComponent] = useState(null);
 
   const renderComponent = () =>{
     switch (activeComponent) {
       case "profile":
-        return <Profile user={user} onClose={() => setActiveComponent(null)} />;
+        return <Profile user={user} />;
       case "cabsummary":
-        return <CabSummary user= {user} onclose= {() => setActiveComponent(null)} />
+        return <CabSummary user= {user} onClose= {() => setActiveComponent(null)} />
       default:
-        return <Profile user={user} onClose={() => setActiveComponent(null)} />;
+        return <Profile user={user} />;
 
     }
   };

@@ -6,6 +6,7 @@ function BookCab({user}) {
   const [destination, setDestination] = useState("");
   const [ackData, setAckData] = useState(null);
   const [message, setMessage] = useState("");
+  const [refreshCabs, setRefreshCabs] = useState(false);
   const [bookcab, { isLoading: requesting }] = useBookcabMutation();
   const [rideconfirm, { isLoading: confirming }] = useRideconfirmMutation();
   const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
@@ -15,21 +16,21 @@ function BookCab({user}) {
       try {
         const response = await getAvailableCabs({
           customerusername: user.username,
-          customerpassword: user.encryptedpassword
+          customerpassword: user.password
         }).unwrap();
       } catch (err) {
         console.error("Failed to fetch cabs:", err);
       }
     };
     fetchCabs();
-  }, [getAvailableCabs]);
+  }, [getAvailableCabs, refreshCabs]);
 
   const handleRequest = async (e) => {
     e.preventDefault();
     try {
       const response = await bookcab({
         customerusername: user.username,
-        customerpassword: user.encryptedpassword,
+        customerpassword: user.password,
         source,
         destination
 
@@ -46,11 +47,12 @@ function BookCab({user}) {
     try {
       const response = await rideconfirm({
         customerusername: user.username,
-        customerpassword: user.encryptedpassword,
+        customerpassword: user.password,
         ...ackData,
         confirm: true , 
     }).unwrap();
       setMessage("Cab confirmed successfully!");
+      setRefreshCabs(prev => !prev);
       setAckData(null); // clear after confirmation
     } catch (err) {
       setMessage(err.data?.error || "Confirmation failed");

@@ -8,7 +8,7 @@ const CustomerSummary = ({ user, onClose }) => {
   useEffect(() => {
       customersummary({
         customerusername: user.username,
-        customerpassword: user.encryptedpassword // Ensure field matches backend
+        customerpassword: user.password // Ensure field matches backend
       });
   }, [user, customersummary]);
 

@@ -92,7 +92,7 @@ function CabRegister({user}) {
           gender,
         },
         adminusername: user.username,
-        adminpassword: user.encryptedpassword,
+        adminpassword: user.password,
         cablocation: formData.cablocation,
       }).unwrap();
       alert("Successfully Registered!");
