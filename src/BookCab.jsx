@@ -72,6 +72,7 @@ function BookCab({user}) {
           placeholder="Source"
           value={source}
           onChange={(e) => setSource(e.target.value)}
+          disabled={!!ackData} // disable input when ackData exists
           required
         />
         <input
@@ -79,9 +80,10 @@ function BookCab({user}) {
           placeholder="Destination"
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
+          disabled={!!ackData}
           required
         />
-        <button type="submit" disabled={requesting}>
+        <button type="submit" disabled={requesting || !!ackData}>
           {requesting ? "Requesting..." : "Request Cab"}
         </button>
       </form>

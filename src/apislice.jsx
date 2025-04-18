@@ -4,6 +4,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/cab/zula/cab",
+    credentials: 'include'
   }),
   endpoints: (builder) => ({
     register: builder.mutation({

@@ -135,13 +135,13 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      //await logout({ userid: String(user.userid), password: user.password }).unwrap();
-      setUser(null);
-      setFormData({ name: "", username: "", password: "", age: "" }); // Reset form data
-      setValidationErrors({}); // Optional: Clear any validation messages
+      await logout().unwrap(); // calls the logout endpoint
+      setFormData({ name: "", username: "", password: "", age: "" });
+      setValidationErrors({});
     } catch (error) {
       console.error("Logout failed", error);
     }
+    setUser(null);
   };
 
   if (user) {

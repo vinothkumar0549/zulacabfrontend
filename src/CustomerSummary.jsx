@@ -12,6 +12,15 @@ const CustomerSummary = ({ user, onClose }) => {
       });
   }, [user, customersummary]);
 
+  const totals = data?.reduce(
+    (acc, ride) => {
+      acc.fare += ride.fare;
+      acc.trips += 1;
+      return acc;
+    },
+    { fare: 0, trips: 0 }
+  ) || { fare: 0,  trips: 0 };
+
   return (
     <div className="activity-container">
       <h2>Customer Ride History</h2>
@@ -21,6 +30,8 @@ const CustomerSummary = ({ user, onClose }) => {
         <div className="transaction-list-container">
           <p><strong>Customer Id: </strong> {user.userid}</p>
           <p><strong>Customer Name: </strong>{user.name} </p>
+          <p><strong>Total Fare Given: </strong>{totals.fare}</p>
+          <p><strong>Total Trips: </strong>{totals.trips}</p>
           <ul className="transaction-list">
             <li className="transaction-item transaction-header">
               <div>Source</div>
