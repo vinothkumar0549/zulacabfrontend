@@ -35,6 +35,13 @@ export const apiSlice = createApi({
         body: rideconfirmData,
       })
     }),
+    cancelride: builder.mutation({
+      query: (cancelrideData) => ({
+        url: "/cancelride",
+        method: "POST",
+        body: cancelrideData,
+      })
+    }),
     customersummary: builder.mutation({
       query: (customersummaryData) => ({
         url: "/customersummary",
@@ -110,6 +117,7 @@ export const {
   useLoginMutation,
   useBookcabMutation,
   useRideconfirmMutation,
+  useCancelrideMutation,
   useCustomersummaryMutation,
   useCabsummaryMutation,
   useGetallcabsummaryMutation,

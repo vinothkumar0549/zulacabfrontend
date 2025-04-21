@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAvailablecabsMutation, useBookcabMutation, useRideconfirmMutation } from "./apislice";
+import { useAvailablecabsMutation, useBookcabMutation, useRideconfirmMutation, useCancelrideMutation } from "./apislice";
 
 function BookCab({user}) {
   const [source, setSource] = useState("");
@@ -10,6 +10,10 @@ function BookCab({user}) {
   const [bookcab, { isLoading: requesting }] = useBookcabMutation();
   const [rideconfirm, { isLoading: confirming }] = useRideconfirmMutation();
   const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
+  const [cancelride] = useCancelrideMutation();
+  const [timer, setTimer] = useState(null); // Timer state to track timeout
+  const [countdown, setCountdown] = useState(60); // For showing 60 seconds
+
 
   useEffect(() => {
     const fetchCabs = async () => {
@@ -37,11 +41,39 @@ function BookCab({user}) {
      }).unwrap();
       setAckData(response);
       setMessage("Cab request acknowledged. Please confirm.");
+      startConfirmationTimer(); // Start the timer for 1 minute
     } catch (err) {
       setMessage(err.data?.error || "Request failed");
     }
   };
 
+  const startConfirmationTimer = () => {
+    setCountdown(60); // Reset countdown
+    const newTimer = setTimeout(() => {
+      setAckData(null);
+      setMessage("Cab request timed out. Please re-enter your details.");
+      setCountdown(60); // Reset for future requests
+    }, 60000);
+    setTimer(newTimer);
+  
+    // Start visual countdown
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 60;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+  
+  const clearAllTimers = () => {
+    clearTimeout(timer);
+    setCountdown(60); // Reset countdown display
+  };
+  
+  // In confirm and reject handlers
   const handleConfirm = async () => {
     if (!ackData) return;
     try {
@@ -49,20 +81,36 @@ function BookCab({user}) {
         customerusername: user.username,
         customerpassword: user.password,
         ...ackData,
-        confirm: true , 
-    }).unwrap();
+        confirm: true,
+      }).unwrap();
       setMessage("Cab confirmed successfully!");
-      setRefreshCabs(prev => !prev);
-      setAckData(null); // clear after confirmation
+      setRefreshCabs((prev) => !prev);
+      setAckData(null);
+      clearAllTimers();
     } catch (err) {
       setMessage(err.data?.error || "Confirmation failed");
     }
   };
-
-  const handleReject = () => {
+  
+  const handleReject = async () => {
+    if (!ackData) return;
+  
+    try {
+      const response = await cancelride({
+        customerusername: user.username,
+        customerpassword: user.password,
+        cabid: ackData.cabid
+      }).unwrap();
+  
+      setMessage("Cabid " + response.cancel + " request cancelled successfully.");
+    } catch (err) {
+      setMessage(err.data?.error || "Failed to cancel cab request.");
+    }
+  
     setAckData(null);
-    setMessage("Cab request rejected.");
+    clearAllTimers();
   };
+  
 
   return (
     <div className="cab-form-container">
@@ -122,7 +170,10 @@ function BookCab({user}) {
 </div>
 
       {ackData && (
-        <div className="confirmation-box">
+        <div className="confirmation-box"  style={{ position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, right: 0, color: "red", fontWeight: "bold" }}>
+          Time left: {countdown}s
+        </div>
         <p>Acknowledged! Cab Details:</p>
         <ul>
           <li>Cab ID: {ackData.cabid}</li>
