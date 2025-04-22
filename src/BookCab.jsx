@@ -7,6 +7,9 @@ function BookCab({user}) {
   const [ackData, setAckData] = useState(null);
   const [message, setMessage] = useState("");
   const [refreshCabs, setRefreshCabs] = useState(false);
+  const [cabtype, setCabtype] = useState("SUV");
+  const [departureTime, setDepartureTime] = useState("");
+  const [arrivalTime, setArrivalTime] = useState("");
   const [bookcab, { isLoading: requesting }] = useBookcabMutation();
   const [rideconfirm, { isLoading: confirming }] = useRideconfirmMutation();
   const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
@@ -31,13 +34,19 @@ function BookCab({user}) {
 
   const handleRequest = async (e) => {
     e.preventDefault();
+    if (source.trim().toUpperCase() === destination.trim().toUpperCase()) {
+      setMessage("Source and destination are same.");
+      return; // Prevent API call
+    }
     try {
       const response = await bookcab({
         customerusername: user.username,
         customerpassword: user.password,
+        cabtype,
         source,
-        destination
-
+        destination,
+        departuretime: departureTime,
+        arrivaltime: arrivalTime
      }).unwrap();
       setAckData(response);
       setMessage("Cab request acknowledged. Please confirm.");
@@ -82,6 +91,8 @@ function BookCab({user}) {
         customerpassword: user.password,
         ...ackData,
         confirm: true,
+        departuretime: departureTime,
+        arrivaltime: arrivalTime
       }).unwrap();
       setMessage("Cab confirmed successfully!");
       setRefreshCabs((prev) => !prev);
@@ -131,6 +142,38 @@ function BookCab({user}) {
           disabled={!!ackData}
           required
         />
+        <div className="form-group">
+              <label>Cab Type</label>
+              <select value={cabtype} onChange={(e) => setCabtype(e.target.value)} disabled={!!ackData}
+              >
+                <option value="SUV">SUV</option>
+                <option value="SEDAN">SEDAN</option>
+                <option value="MINI">MINI</option>
+              </select>
+        </div>
+
+        <label htmlFor="departure">Select Departure Date and Time:</label>
+        <input
+          type="datetime-local"
+          id="departure"
+          name="departure"
+          value={departureTime}
+          onChange={(e) => setDepartureTime(e.target.value)}
+          disabled={!!ackData}
+          required
+        />
+
+        <label htmlFor="arrival">Select Arrival Date and Time:</label>
+        <input
+          type="datetime-local"
+          id="arrival"
+          name="arrival"
+          value={arrivalTime}
+          onChange={(e) => setArrivalTime(e.target.value)}
+          disabled={!!ackData}
+          required
+        />
+
         <button type="submit" disabled={requesting || !!ackData}>
           {requesting ? "Requesting..." : "Request Cab"}
         </button>

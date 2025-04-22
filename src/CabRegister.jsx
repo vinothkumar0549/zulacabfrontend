@@ -4,6 +4,7 @@ import "./App.css";
 
 function CabRegister({user}) {
   const [gender, setGender] = useState("MALE");
+  const [cabtype, setCabtype] = useState("SUV");
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -94,6 +95,7 @@ function CabRegister({user}) {
         adminusername: user.username,
         adminpassword: user.password,
         cablocation: formData.cablocation,
+        cabtype
       }).unwrap();
       alert("Successfully Registered!");
       setFormData({ name: "", username: "", password: "", age: "", cablocation: "", });
@@ -176,6 +178,15 @@ function CabRegister({user}) {
             <option value="MALE">MALE</option>
             <option value="FEMALE">FEMALE</option>
           </select>
+        </div>
+        <div className="form-group">
+              <label>Cab Type</label>
+              <select value={cabtype} onChange={(e) => setCabtype(e.target.value)}
+              >
+                <option value="SUV">SUV</option>
+                <option value="SEDAN">SEDAN</option>
+                <option value="MINI">MINI</option>
+              </select>
         </div>
         <button type="submit" disabled={isLoading}>
           {isLoading ? "Registering..." : "Register"}
