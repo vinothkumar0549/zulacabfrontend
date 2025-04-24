@@ -58,6 +58,14 @@ export const apiSlice = createApi({
       }),
        transformResponse: (response) => response.cabsummary || [] // Ensure array
     }),
+    penaltysummary: builder.mutation({
+      query: (penaltysummaryData) => ({
+        url: "/penalty",
+        method: "POST",
+        body: penaltysummaryData,
+      }),
+       transformResponse: (response) => response.penalty || [] // Ensure array
+    }),
     getallcabsummary: builder.mutation({
       query: (getallcabsummaryData) =>({
         url: "/getallcabsummary",
@@ -119,6 +127,7 @@ export const {
   useRideconfirmMutation,
   useCancelrideMutation,
   useCustomersummaryMutation,
+  usePenaltysummaryMutation,
   useCabsummaryMutation,
   useGetallcabsummaryMutation,
   useGetallcustomersummaryMutation,

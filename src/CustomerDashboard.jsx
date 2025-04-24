@@ -3,6 +3,7 @@ import "./CustomerDashboard.css";
 import Profile from "./Profile";
 import BookCab from "./BookCab";
 import CustomerSummary from "./CustomerSummary";
+import PenaltySummary from "./PenaltySummary";
 //import App from "./App";
 
 
@@ -18,6 +19,8 @@ function CustomerDashboard({ user, onLogout }) {
         return <BookCab user = {user} />
       case "customersummary":
         return <CustomerSummary user= {user} onClose={() => setActiveComponent(null)} />
+      case "penalty":
+        return <PenaltySummary user = {user} onClose={() => setActiveComponent(null)} />
       default:
         return <Profile user={user} />;
 
@@ -37,6 +40,7 @@ function CustomerDashboard({ user, onLogout }) {
           <button className="btn" onClick={() => setActiveComponent("profile")}>Profile</button>
           <button className="btn" onClick={() => setActiveComponent("bookcab")}>Book Cab</button>
           <button className="btn" onClick={() => setActiveComponent("customersummary")}>Customer Summary</button>
+          <button className="btn" onClick={() => setActiveComponent("penalty")}>Penalty Summary</button>
           <button className="btn logout" onClick={onLogout}>Logout</button>
         </div>
         <div className="content-area">

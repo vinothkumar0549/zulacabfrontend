@@ -110,7 +110,8 @@ function BookCab({user}) {
       const response = await cancelride({
         customerusername: user.username,
         customerpassword: user.password,
-        cabid: ackData.cabid
+        cabid: ackData.cabid,
+        customerid: user.userid
       }).unwrap();
   
       setMessage("Cabid " + response.cancel + " request cancelled successfully.");
