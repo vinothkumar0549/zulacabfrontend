@@ -1,0 +1,93 @@
+/* Ensure the layout is using Flexbox */
+/* .cab-container {
+    display: flex;
+    height: 100vh; 
+    flex-direction: row; 
+  } */
+  
+  /* .cab-form-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; 
+  } */
+  /* .cab-form-container {
+    width: 400px; 
+    padding: 20px;
+    overflow-y: auto;
+  } */
+  
+  /* .chat-container {
+    flex: 0 0 350px;
+    background-color: #f9f9f9; 
+    padding: 20px;
+    overflow-y: auto; 
+  } */
+  
+  .cab-container {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+  }
+  
+  .cab-form-container {
+    width: 400px; 
+    padding: 30px;
+  }
+  
+  .chat-container {
+    flex: 0 0 350px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    overflow-y: auto;
+    border-left: 1px solid #ddd;
+  }
+  
+  .confirmation-box {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input,
+  select {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .available-cabs {
+    margin-top: 20px;
+  }
+  
+  /* .confirmation-box {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  } */
+  
+  .confirmation-box button {
+    margin-top: 10px;
+  }
+  

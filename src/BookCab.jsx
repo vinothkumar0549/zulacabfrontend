@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAvailablecabsMutation, useBookcabMutation, useRideconfirmMutation, useCancelrideMutation } from "./apislice";
+import ChatComponent from "./ChatComponent"; // Adjust path as needed
+import "./BookCab.css";
 
 function BookCab({user}) {
   const [source, setSource] = useState("");
@@ -15,7 +17,7 @@ function BookCab({user}) {
   const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
   const [cancelride] = useCancelrideMutation();
   const [timer, setTimer] = useState(null); // Timer state to track timeout
-  const [countdown, setCountdown] = useState(60); // For showing 60 seconds
+  const [countdown, setCountdown] = useState(60 * 5); // For showing 60 seconds
 
 
   useEffect(() => {
@@ -57,12 +59,12 @@ function BookCab({user}) {
   };
 
   const startConfirmationTimer = () => {
-    setCountdown(60); // Reset countdown
+    setCountdown(60* 5); // Reset countdown
     const newTimer = setTimeout(() => {
       setAckData(null);
       setMessage("Cab request timed out. Please re-enter your details.");
-      setCountdown(60); // Reset for future requests
-    }, 60000);
+      setCountdown(60*5); // Reset for future requests
+    }, 60000 *5);
     setTimer(newTimer);
   
     // Start visual countdown
@@ -70,7 +72,7 @@ function BookCab({user}) {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          return 60;
+          return 60 *5;
         }
         return prev - 1;
       });
@@ -79,7 +81,7 @@ function BookCab({user}) {
   
   const clearAllTimers = () => {
     clearTimeout(timer);
-    setCountdown(60); // Reset countdown display
+    setCountdown(60 *5); // Reset countdown display
   };
   
   // In confirm and reject handlers
@@ -125,117 +127,255 @@ function BookCab({user}) {
   
 
   return (
-    <div className="cab-form-container">
-      <form onSubmit={handleRequest}>
-        <input
-          type="text"
-          placeholder="Source"
-          value={source}
-          onChange={(e) => setSource(e.target.value)}
-          disabled={!!ackData} // disable input when ackData exists
-          required
-        />
-        <input
-          type="text"
-          placeholder="Destination"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          disabled={!!ackData}
-          required
-        />
-        <div className="form-group">
-              <label>Cab Type</label>
-              <select value={cabtype} onChange={(e) => setCabtype(e.target.value)} disabled={!!ackData}
-              >
-                <option value="SUV">SUV</option>
-                <option value="SEDAN">SEDAN</option>
-                <option value="MINI">MINI</option>
-              </select>
-        </div>
-
-        <label htmlFor="departure">Select Departure Date and Time:</label>
-        <input
-          type="datetime-local"
-          id="departure"
-          name="departure"
-          value={departureTime}
-          onChange={(e) => setDepartureTime(e.target.value)}
-          disabled={!!ackData}
-          required
-        />
-
-        <label htmlFor="arrival">Select Arrival Date and Time:</label>
-        <input
-          type="datetime-local"
-          id="arrival"
-          name="arrival"
-          value={arrivalTime}
-          onChange={(e) => setArrivalTime(e.target.value)}
-          disabled={!!ackData}
-          required
-        />
-
-        <button type="submit" disabled={requesting || !!ackData}>
-          {requesting ? "Requesting..." : "Request Cab"}
-        </button>
-      </form>
-
-      <div className="available-cabs">
-  <h4>Available Cabs:</h4>
-
-  {data?.length > 0 ? (
-    <table style={{ borderCollapse: "collapse", width: "100%" }}>
-      <thead>
-        <tr>
-          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Location</th>
-          <th style={{ border: "1px solid #ccc", padding: "8px" }}>Cab ID's</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((loc, index) => (
-          <tr key={index}>
-            <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-              {loc.locationname}
-            </td>
-            <td style={{ border: "1px solid #ccc", padding: "8px" }}>
-              {loc.cabid.split(",").map((id, idx) => (
-                <span key={idx} style={{ marginRight: "6px" }}>
-                  {id}
-                </span>
-              ))}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  ) : (
-    <p>No cabs available</p>
-  )}
-</div>
-
+    <div className="cab-container">
+      <div className="cab-form-container">
+        <form onSubmit={handleRequest}>
+          <input
+            type="text"
+            placeholder="Source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            disabled={!!ackData}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Destination"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            disabled={!!ackData}
+            required
+          />
+          <div className="form-group">
+            <label>Cab Type</label>
+            <select value={cabtype} onChange={(e) => setCabtype(e.target.value)} disabled={!!ackData}>
+              <option value="SUV">SUV</option>
+              <option value="SEDAN">SEDAN</option>
+              <option value="MINI">MINI</option>
+            </select>
+          </div>
+  
+          <label htmlFor="departure">Select Departure Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="departure"
+            name="departure"
+            value={departureTime}
+            onChange={(e) => setDepartureTime(e.target.value)}
+            disabled={!!ackData}
+            required
+          />
+  
+          <label htmlFor="arrival">Select Arrival Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="arrival"
+            name="arrival"
+            value={arrivalTime}
+            onChange={(e) => setArrivalTime(e.target.value)}
+            disabled={!!ackData}
+            required
+          />
+  
+          <button type="submit" disabled={requesting || !!ackData}>
+            {requesting ? "Requesting..." : "Request Cab"}
+          </button>
+        </form>
+  
+        {!ackData && (
+          <div className="available-cabs">
+            <h4>Available Cabs:</h4>
+            {data?.length > 0 ? (
+              <table style={{ borderCollapse: "collapse", width: "100%" }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: "1px solid #ccc", padding: "8px" }}>Location</th>
+                    <th style={{ border: "1px solid #ccc", padding: "8px" }}>Cab ID's</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((loc, index) => (
+                    <tr key={index}>
+                      <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+                        {loc.locationname}
+                      </td>
+                      <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+                        {loc.cabid.split(",").map((id, idx) => (
+                          <span key={idx} style={{ marginRight: "6px" }}>
+                            {id}
+                          </span>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No cabs available</p>
+            )}
+          </div>
+        )}
+  
+        {message && <p>{message}</p>}
+  
+        {/* Confirmation box moved here */}
+        {ackData && (
+          <div className="confirmation-box" style={{ marginTop: "20px", position: "relative" }}>
+            <div style={{ position: "absolute", top: 0, right: 0, color: "red", fontWeight: "bold" }}>
+              Time left: {countdown}s
+            </div>
+            <p>Acknowledged! Cab Details:</p>
+            <ul>
+              <li>Cab ID: {ackData.cabid}</li>
+              <li>Distance: {ackData.distance} KM</li>
+              <li>Fare: {ackData.fare}</li>
+            </ul>
+            <button onClick={handleConfirm} disabled={confirming}>
+              {confirming ? "Confirming..." : "Confirm Cab"}
+            </button>
+            <button onClick={handleReject} disabled={confirming} style={{ marginLeft: "10px" }}>
+              Reject Cab
+            </button>
+          </div>
+        )}
+      </div>
+  
+      {/* ChatComponent always to the right, only shown after ack */}
       {ackData && (
-        <div className="confirmation-box"  style={{ position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, right: 0, color: "red", fontWeight: "bold" }}>
-          Time left: {countdown}s
-        </div>
-        <p>Acknowledged! Cab Details:</p>
-        <ul>
-          <li>Cab ID: {ackData.cabid}</li>
-          <li>Distance: {ackData.distance} KM</li>
-          <li>Fare: {ackData.fare}</li>
-        </ul>
-        <button onClick={handleConfirm} disabled={confirming}>
-          {confirming ? "Confirming..." : "Confirm Cab"}
-        </button>
-        <button onClick={handleReject} disabled={confirming} style={{ marginLeft: "10px" }}>
-            Reject Cab
-        </button>
+        <div className="chat-container">
+          <ChatComponent
+            roomId={ackData.roomid}
+            userType="CUSTOMER"
+            userId={user.userid}
+          />
         </div>
       )}
-
-      {message && <p>{message}</p>}
     </div>
   );
+  
 }
 
 export default BookCab;
+
+
+
+// <div className="cab-form-container">
+// <form onSubmit={handleRequest}>
+//   <input
+//     type="text"
+//     placeholder="Source"
+//     value={source}
+//     onChange={(e) => setSource(e.target.value)}
+//     disabled={!!ackData} // disable input when ackData exists
+//     required
+//   />
+//   <input
+//     type="text"
+//     placeholder="Destination"
+//     value={destination}
+//     onChange={(e) => setDestination(e.target.value)}
+//     disabled={!!ackData}
+//     required
+//   />
+//   <div className="form-group">
+//         <label>Cab Type</label>
+//         <select value={cabtype} onChange={(e) => setCabtype(e.target.value)} disabled={!!ackData}
+//         >
+//           <option value="SUV">SUV</option>
+//           <option value="SEDAN">SEDAN</option>
+//           <option value="MINI">MINI</option>
+//         </select>
+//   </div>
+
+//   <label htmlFor="departure">Select Departure Date and Time:</label>
+//   <input
+//     type="datetime-local"
+//     id="departure"
+//     name="departure"
+//     value={departureTime}
+//     onChange={(e) => setDepartureTime(e.target.value)}
+//     disabled={!!ackData}
+//     required
+//   />
+
+//   <label htmlFor="arrival">Select Arrival Date and Time:</label>
+//   <input
+//     type="datetime-local"
+//     id="arrival"
+//     name="arrival"
+//     value={arrivalTime}
+//     onChange={(e) => setArrivalTime(e.target.value)}
+//     disabled={!!ackData}
+//     required
+//   />
+
+//   <button type="submit" disabled={requesting || !!ackData}>
+//     {requesting ? "Requesting..." : "Request Cab"}
+//   </button>
+// </form>
+
+
+// {ackData && (
+// <ChatComponent
+//   roomId={ackData.roomid}
+//   userType="CUSTOMER"
+//   userId={user.userid}
+// />
+// )}
+
+
+// <div className="available-cabs">
+// <h4>Available Cabs:</h4>
+
+// {data?.length > 0 ? (
+// <table style={{ borderCollapse: "collapse", width: "100%" }}>
+// <thead>
+//   <tr>
+//     <th style={{ border: "1px solid #ccc", padding: "8px" }}>Location</th>
+//     <th style={{ border: "1px solid #ccc", padding: "8px" }}>Cab ID's</th>
+//   </tr>
+// </thead>
+// <tbody>
+//   {data.map((loc, index) => (
+//     <tr key={index}>
+//       <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+//         {loc.locationname}
+//       </td>
+//       <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+//         {loc.cabid.split(",").map((id, idx) => (
+//           <span key={idx} style={{ marginRight: "6px" }}>
+//             {id}
+//           </span>
+//         ))}
+//       </td>
+//     </tr>
+//   ))}
+// </tbody>
+// </table>
+// ) : (
+// <p>No cabs available</p>
+// )}
+// </div>
+
+// {ackData && (
+//   <div className="confirmation-box"  style={{ position: "relative" }}>
+//   <div style={{ position: "absolute", top: 0, right: 0, color: "red", fontWeight: "bold" }}>
+//     Time left: {countdown}s
+//   </div>
+//   <p>Acknowledged! Cab Details:</p>
+//   <ul>
+//     <li>Cab ID: {ackData.cabid}</li>
+//     <li>Distance: {ackData.distance} KM</li>
+//     <li>Fare: {ackData.fare}</li>
+//   </ul>
+//   <button onClick={handleConfirm} disabled={confirming}>
+//     {confirming ? "Confirming..." : "Confirm Cab"}
+//   </button>
+//   <button onClick={handleReject} disabled={confirming} style={{ marginLeft: "10px" }}>
+//       Reject Cab
+//   </button>
+//   </div>
+// )}
+
+// {message && <p>{message}</p>}
+// </div>
