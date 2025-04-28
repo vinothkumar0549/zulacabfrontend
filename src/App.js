@@ -139,7 +139,7 @@ function App() {
       setFormData({ name: "", username: "", password: "", age: "" });
       setValidationErrors({});
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error("Logout failed", error || "An Error Occurred");
     }
     setUser(null);
   };

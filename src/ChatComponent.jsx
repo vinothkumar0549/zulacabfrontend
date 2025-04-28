@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 
-function ChatComponent({ userType, userId, roomId }) {
+function ChatComponent({ userType, userId, roomId, rideUpdate}) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const socketRef = useRef(null);
@@ -49,7 +49,19 @@ function ChatComponent({ userType, userId, roomId }) {
   };
 
   return (
+    
     <div style={{ border: "1px solid #ddd", padding: "10px", marginTop: "20px" }}>
+
+<    div className="chat-container">
+      {/* Show ride update on top if available */}
+      {rideUpdate && (
+        <div className="ride-info">
+          <h3>Current Ride Details</h3>
+          <p><strong>Source:</strong> {rideUpdate.source}</p>
+          <p><strong>Destination:</strong> {rideUpdate.destination}</p>
+        </div>
+      )}
+    </div>
       <h4>Chat Room: {roomId}</h4>
       <div
         style={{
