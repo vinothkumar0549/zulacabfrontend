@@ -9,7 +9,7 @@ function ChatComponent({ userType, userId, roomId }) {
     if (!roomId) return;
 
     // Connect to WebSocket
-    const ws = new WebSocket(`ws://localhost:8080/cab/chat/${roomId}`);
+    const ws = new WebSocket(`ws://localhost:8080/cab/chat/${roomId}/${userType}/${userId}`);
     socketRef.current = ws;
 
     ws.onopen = () => {
@@ -33,6 +33,7 @@ function ChatComponent({ userType, userId, roomId }) {
     // Clean up on unmount
     return () => {
       ws.close();
+      console.log("unmount close the websocket")
     };
   }, [roomId]);
 

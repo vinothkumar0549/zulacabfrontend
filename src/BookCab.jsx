@@ -18,6 +18,8 @@ function BookCab({user}) {
   const [cancelride] = useCancelrideMutation();
   const [timer, setTimer] = useState(null); // Timer state to track timeout
   const [countdown, setCountdown] = useState(60 * 5); // For showing 60 seconds
+  const [intervalId, setIntervalId] = useState(null);
+
 
 
   useEffect(() => {
@@ -59,29 +61,40 @@ function BookCab({user}) {
   };
 
   const startConfirmationTimer = () => {
-    setCountdown(60* 5); // Reset countdown
+    clearAllTimers(); // Always clear previous timeout and interval before starting new
+  
+    setCountdown(60 * 5); // Reset countdown
+  
     const newTimer = setTimeout(() => {
       setAckData(null);
       setMessage("Cab request timed out. Please re-enter your details.");
-      setCountdown(60*5); // Reset for future requests
-    }, 60000 *5);
+      setCountdown(60 * 5);
+    }, 60000 * 5);
     setTimer(newTimer);
   
-    // Start visual countdown
-    const interval = setInterval(() => {
+    const newInterval = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          clearInterval(interval);
-          return 60 *5;
+          clearInterval(newInterval);
+          return 60 * 5;
         }
         return prev - 1;
       });
     }, 1000);
+    setIntervalId(newInterval);
   };
   
+  
   const clearAllTimers = () => {
-    clearTimeout(timer);
-    setCountdown(60 *5); // Reset countdown display
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+    setCountdown(60 * 5); // Reset countdown
   };
   
   // In confirm and reject handlers

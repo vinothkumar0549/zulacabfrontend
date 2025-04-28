@@ -10,7 +10,7 @@ function CabDashboard({ user, onLogout }) {
   const [roomId, setRoomId] = useState(null); // ✅ Store room ID
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8080/cab/driver/${user.userid}`);
+    const socket = new WebSocket(`ws://localhost:8080/cab/cab/${user.userid}`);
 
     socket.onopen = () => {
       console.log("Driver WebSocket connected for ride updates.");
@@ -79,7 +79,7 @@ function CabDashboard({ user, onLogout }) {
       </div>
 
       {/* Optional Ride Pop-up */}
-      {rideUpdate && (
+      {roomId && (
         <div className="popup">
           <div className="popup-content">
             <h3>New Ride Assigned</h3>
