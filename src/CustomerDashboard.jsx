@@ -10,13 +10,14 @@ import PenaltySummary from "./PenaltySummary";
 function CustomerDashboard({ user, onLogout }) {
 
     const [activeComponent, setActiveComponent] = useState(null);
+    const [bookcab, setBookcab] = useState(false);
 
   const renderComponent = () =>{
     switch (activeComponent) {
       case "profile":
         return <Profile user={user} />;
       case "bookcab":
-        return <BookCab user = {user} />
+        return <BookCab user = {user} setBookcab = {setBookcab} />
       case "customersummary":
         return <CustomerSummary user= {user} onClose={() => setActiveComponent(null)} />
       case "penalty":
@@ -37,11 +38,11 @@ function CustomerDashboard({ user, onLogout }) {
       </div>
       <div className="main-content">
         <div className="sidebar">
-          <button className="btn" onClick={() => setActiveComponent("profile")}>Profile</button>
+          <button className="btn" disabled={bookcab} onClick={() => setActiveComponent("profile")}>Profile</button>
           <button className="btn" onClick={() => setActiveComponent("bookcab")}>Book Cab</button>
-          <button className="btn" onClick={() => setActiveComponent("customersummary")}>Customer Summary</button>
-          <button className="btn" onClick={() => setActiveComponent("penalty")}>Penalty Summary</button>
-          <button className="btn logout" onClick={onLogout}>Logout</button>
+          <button className="btn" disabled={bookcab} onClick={() => setActiveComponent("customersummary")}>Customer Summary</button>
+          <button className="btn" disabled={bookcab} onClick={() => setActiveComponent("penalty")}>Penalty Summary</button>
+          <button className="btn logout" disabled={bookcab} onClick={onLogout}>Logout</button>
         </div>
         <div className="content-area">
           {renderComponent()}

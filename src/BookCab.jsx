@@ -3,7 +3,7 @@ import { useAvailablecabsMutation, useBookcabMutation, useRideconfirmMutation, u
 import ChatComponent from "./ChatComponent";
 import "./BookCab.css";
 
-function BookCab({ user }) {
+function BookCab({user, setBookcab} ) {
   const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
   const [ackData, setAckData] = useState(null);
@@ -16,7 +16,8 @@ function BookCab({ user }) {
   const [rideconfirm, { isLoading: confirming }] = useRideconfirmMutation();
   const [getAvailableCabs, { data, error, isLoading }] = useAvailablecabsMutation();
   const [cancelride] = useCancelrideMutation();
-  const [countdown, setCountdown] = useState(120); // 120 seconds countdown
+  const[timer, setTimer] = useState(null);
+  const [countdown, setCountdown] = useState(60*2); // 120 seconds countdown
   const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function BookCab({ user }) {
         arrivaltime: arrivalTime
       }).unwrap();
       setAckData(response);
+      setBookcab(true);
       setMessage("Cab request acknowledged. Please confirm.");
       startConfirmationTimer(); // Start the timer for 2 minutes
     } catch (err) {
@@ -59,27 +61,40 @@ function BookCab({ user }) {
   };
 
   const startConfirmationTimer = () => {
-    clearAllTimers(); // Always clear previous timeout and interval before starting new
-    setCountdown(120); // Reset countdown to 120 seconds
-    
+    clearAllTimers();
+    setCountdown(60 * 2);
+
+
+    const newTimer = setTimeout(() => {
+      setAckData(null);
+      setMessage("Cab request timed out. Please re-enter your details.");
+      setCountdown(60 * 2);
+      setBookcab(false);
+    }, 60000 * 2);
+    setTimer(newTimer);
+
     const newInterval = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          clearInterval(newInterval); // Clear the interval once countdown reaches 0
-          return 120; // Reset to 120 seconds
+          clearInterval(newInterval);
+          return 60 * 2;
         }
-        return prev - 1; // Decrease the countdown by 1 second
+        return prev - 1;
       });
-    }, 1000); // 1-second interval for countdown
+    }, 1000);
     setIntervalId(newInterval);
   };
 
   const clearAllTimers = () => {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
     if (intervalId) {
       clearInterval(intervalId);
       setIntervalId(null);
     }
-    setCountdown(120); // Reset countdown to initial value
+    setCountdown(60 * 2);
   };
 
   // In confirm and reject handlers
@@ -97,6 +112,7 @@ function BookCab({ user }) {
       setMessage("Cab confirmed successfully!");
       setRefreshCabs((prev) => !prev);
       setAckData(null);
+      setBookcab(false);
       clearAllTimers();
     } catch (err) {
       setMessage(err.data?.error || "Confirmation failed");
@@ -113,7 +129,7 @@ function BookCab({ user }) {
         cabid: ackData.cabid,
         customerid: user.userid
       }).unwrap();
-
+      setBookcab(false);
       setMessage("Cabid " + response.cancel + " request cancelled successfully.");
     } catch (err) {
       setMessage(err.data?.error || "Failed to cancel cab request.");
