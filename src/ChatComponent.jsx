@@ -83,18 +83,21 @@ function ChatComponent({ userType, userId, roomId, rideUpdate}) {
               justifyContent: msg.senderId === userId ? "flex-end" : "flex-start",
             }}
           >
-            <div
-              style={{
-                maxWidth: "70%",
-                padding: "10px",
-                backgroundColor: msg.senderId === userId ? "#dcf8c6" : "#fff",
-                borderRadius: "10px",
-                border: msg.senderId === userId ? "1px solid #75b741" : "1px solid #ddd",
-                boxShadow: msg.senderId === userId ? "0 4px 6px rgba(0, 0, 0, 0.1)" : "none",
-              }}
-            >
-              <strong>{msg.senderType}</strong>: {msg.message}
-            </div>
+          <div
+            style={{
+              maxWidth: "70%",
+              padding: "10px",
+              backgroundColor: msg.senderId === userId ? "#dcf8c6" : "#fff",
+              borderRadius: "10px",
+              border: msg.senderId === userId ? "1px solid #75b741" : "1px solid #ddd",
+              boxShadow: msg.senderId === userId ? "0 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+              wordBreak: "break-word",        // Breaks long words
+              whiteSpace: "pre-wrap",         // Preserves spacing and line breaks
+            }}
+          >
+            <strong>{msg.senderType}</strong>: {msg.message}
+          </div>
+
           </div>
         ))}
       </div>
