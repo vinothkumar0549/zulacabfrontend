@@ -24,8 +24,8 @@ function BookCab({user, setBookcab} ) {
     const fetchCabs = async () => {
       try {
         await getAvailableCabs({
-          customerusername: user.username,
-          customerpassword: user.password
+          // customerusername: user.username,
+          // customerpassword: user.password
         }).unwrap();
       } catch (err) {
         console.error("Failed to fetch cabs:", err);
@@ -43,8 +43,8 @@ function BookCab({user, setBookcab} ) {
     }
     try {
       const response = await bookcab({
-        customerusername: user.username,
-        customerpassword: user.password,
+        // customerusername: user.username,
+        // customerpassword: user.password,
         cabtype,
         source,
         destination,
@@ -102,8 +102,8 @@ function BookCab({user, setBookcab} ) {
     if (!ackData) return;
     try {
       const response = await rideconfirm({
-        customerusername: user.username,
-        customerpassword: user.password,
+        // customerusername: user.username,
+        // customerpassword: user.password,
         ...ackData,
         confirm: true,
         departuretime: departureTime,
@@ -124,8 +124,8 @@ function BookCab({user, setBookcab} ) {
 
     try {
       const response = await cancelride({
-        customerusername: user.username,
-        customerpassword: user.password,
+        // customerusername: user.username,
+        // customerpassword: user.password,
         cabid: ackData.cabid,
         customerid: user.userid
       }).unwrap();

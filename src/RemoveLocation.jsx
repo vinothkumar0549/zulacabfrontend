@@ -17,8 +17,8 @@ const AddLocation = ({user}) => {
       const response = await removelocation({
         locationname: formData.location,
         distance: Number(formData.distance),
-        adminusername: user.username,
-        adminpassword: user.password,
+        // adminusername: user.username,
+        // adminpassword: user.password,
       }).unwrap()
       alert(response.message);
     } catch (err) { 

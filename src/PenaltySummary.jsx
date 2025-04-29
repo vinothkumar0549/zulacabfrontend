@@ -7,8 +7,8 @@ const CustomerSummary = ({ user, onClose }) => {
 
   useEffect(() => {
       penaltysummary({
-        cabusername: user.username,
-        cabpassword: user.password // Ensure field matches backend
+        // cabusername: user.username,
+        // cabpassword: user.password // Ensure field matches backend
       });
   }, [user, penaltysummary]);
 

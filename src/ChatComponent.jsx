@@ -77,17 +77,17 @@ function ChatComponent({ userType, userId, roomId, rideUpdate}) {
           <div
             key={idx}
             style={{
-              textAlign: msg.senderId === userId ? "right" : "left",
+              textAlign: msg.senderId === String (userId)  ? "right" : "left",
               marginBottom: "10px",
               display: "flex",
-              justifyContent: msg.senderId === userId ? "flex-end" : "flex-start",
+              justifyContent: msg.senderId === String (userId)  ? "flex-end" : "flex-start",
             }}
           >
           <div
             style={{
               maxWidth: "70%",
               padding: "10px",
-              backgroundColor: msg.senderId === userId ? "#dcf8c6" : "#fff",
+              backgroundColor: msg.senderId === String (userId) ? "#dcf8c6" : "#fff",
               borderRadius: "10px",
               border: msg.senderId === userId ? "1px solid #75b741" : "1px solid #ddd",
               boxShadow: msg.senderId === userId ? "0 4px 6px rgba(0, 0, 0, 0.1)" : "none",

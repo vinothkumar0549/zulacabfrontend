@@ -135,7 +135,9 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap(); // calls the logout endpoint
+      await logout({
+        userid: user.userid,
+      }).unwrap(); // calls the logout endpoint
       setFormData({ name: "", username: "", password: "", age: "" });
       setValidationErrors({});
     } catch (error) {

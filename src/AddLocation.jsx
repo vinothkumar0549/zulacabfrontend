@@ -17,8 +17,8 @@ const AddLocation = ({user}) => {
       const response = await addlocation({
         locationname: formData.location,
         distance: Number(formData.distance),
-        adminusername: user.username,
-        adminpassword: user.password,
+        // adminusername: user.username,
+        // adminpassword: user.password,
       }).unwrap()
       alert("New Location Added Successfully \n Location Id : " + response.locationid)
       setFormData({ location: "", distance: "" });
