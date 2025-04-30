@@ -195,6 +195,39 @@ function BookCab({user, setBookcab} ) {
           </button>
         </form>
 
+    <div className="available-cabs">
+     <h4>Available Cabs:</h4>
+ 
+    {ackData ? null : data?.length > 0 ? (
+     <table style={{ borderCollapse: "collapse", width: "100%" }}>
+       <thead>
+         <tr>
+           <th style={{ border: "1px solid #ccc", padding: "8px" }}>Location</th>
+           <th style={{ border: "1px solid #ccc", padding: "8px" }}>Cab ID's</th>
+         </tr>
+       </thead>
+       <tbody>
+         {data.map((loc, index) => (
+           <tr key={index}>
+             <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+               {loc.locationname}
+             </td>
+             <td style={{ border: "1px solid #ccc", padding: "8px" }}>
+               {loc.cabid.split(",").map((id, idx) => (
+                 <span key={idx} style={{ marginRight: "6px" }}>
+                   {id}
+                 </span>
+               ))}
+             </td>
+           </tr>
+         ))}
+       </tbody>
+     </table>
+    ) : (
+     <p>No cabs available</p>
+    )}
+    </div>
+
         {message && <p>{message}</p>}
 
         {ackData && (
